@@ -1,0 +1,3 @@
+DECLARE @TimeinSecond INT
+SET @TimeinSecond = 186
+SELECT CONVERT(VARCHAR, DATEADD(s, @TimeinSecond, 0), 108) AS HHMMSS

@@ -1,13 +1,25 @@
-SELECT
+SELECT 
+
+T1.[Email],
+T1.[Agent],
+T1.Date,
+T1.[Channels],
+(T1.[Login Start Time]) ,
+(T1.[Login End Time]) ,
+T1.[Login Duration]
+
+FROM
+
+(SELECT
 R.RESOURCE_NAME AS [Email]
-,(R.AGENT_FIRST_NAME+' '+ R.AGENT_LAST_NAME) AS [Agent]
+,(R.AGENT_LAST_NAME+' '+ R.AGENT_FIRST_NAME) AS [Agent]
 ,DT.LABEL_YYYY_MM_DD AS Date
 
 ,DATEADD(hour, 2, DT.CAL_DATE + CAST(SRSF.START_TS-DT.DATE_TIME_KEY AS float)/CAST(86400 AS FLOAT))    AS [Login Start Time]
 ,DATEADD(hour, 2, DT.CAL_DATE + CAST(SRSF.END_TS-DT.DATE_TIME_KEY AS float)/CAST(86400 AS FLOAT))    AS [Login End Time]
 
 ,SESSFACT.TOTAL_DURATION AS [Login Duration]
-,SESSFACT.SM_RES_SESSION_FACT_KEY AS [Sessions]
+
 ,MT.MEDIA_NAME AS [Channels]
 
 FROM DATE_TIME DT
@@ -20,7 +32,7 @@ INNER JOIN MEDIA_TYPE MT ON SRSF.MEDIA_TYPE_KEY = MT.MEDIA_TYPE_KEY
 WHERE NOT R.RESOURCE_NAME IN ('aionov','daniel', 'aamelin','jan.m@autodoc.eu')
 AND R.RESOURCE_NAME NOT LIKE '%Test%' AND R.RESOURCE_NAME NOT LIKE '%romanyuta%'
 AND  R.RESOURCE_NAME NOT LIKE '%yazykbaevr%' AND  R.RESOURCE_NAME NOT LIKE '%1000%'
---AND DT.LABEL_YYYY_MM_DD='2019-12-23' AND R.AGENT_FIRST_NAME LIKE '%Clark%'
+
 
 GROUP BY 
 
@@ -37,4 +49,13 @@ MT.MEDIA_NAME
 ,DT.LABEL_YYYY_MM_DD_HH24
 ,SESSFACT.TOTAL_DURATION
 
+) AS T1
 
+GROUP BY 
+T1.[Login Start Time],
+T1.[Login End Time],
+T1.[Email],
+T1.[Agent],
+T1.Date,
+T1.[Channels],
+T1.[Login Duration]

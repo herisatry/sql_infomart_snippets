@@ -1,0 +1,5 @@
+DateTimeZone.RemoveZone(
+    DateTimeZone.ToLocal(
+        DateTime.AddZone([logout stop],0)
+        )
+        )

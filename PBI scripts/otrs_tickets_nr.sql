@@ -1,2 +1,2 @@
 SELECT id, tn, title
-FROM ticket
+FROM ticket t
